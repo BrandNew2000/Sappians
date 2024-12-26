@@ -1,3 +1,4 @@
-.vscode
+.vscode/
 .DS_Store
-sorted_files
+sorted_files/
+__pycache__/
