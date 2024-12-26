@@ -2,8 +2,12 @@ import shutil
 import datetime
 import update_database
 from ocr_analysis import model_run
+from classification import classify
+import sys
+import os
 
 DEBUG=True
+FILE="Aditi/adhaar_sample.pdf"
 
 def debug(string):
     if DEBUG:
@@ -16,22 +20,15 @@ def transport_file(file_path, id):
 
 # ID the file using current epoch in hex (Credits: StackOverflow): 
 def makeid():
-    timestamp = datetime.datetime.now()
+    timestamp = datetime.datetime.now().timestamp()
     time_stamp_hex = hex(int(timestamp))
-    return time_stamp_hex
-
-# Run OCR on file using Aditi's code. ______________________ TBD
-def run_ocr(file_path):
-    pass
-    ocr_data=0
-    return ocr_data
+    return str(time_stamp_hex)[2:]
 
 
 # Run Smitali's code to classify the file. ______________________ TBD
-def classify(ocr_data):
-    pass
-    doc_type="meth"
-    return doc_type
+def classify_doc(file_path):
+    doc_type, ocr_data=classify.analyze_doc(file_path)
+    return doc_type, ocr_data
 
 
 # Use Achintya's code to send the data to an llm to pull details.
@@ -46,11 +43,8 @@ def db_update(doc_type, llm_data, id):
 
 def run_analysis(file_path):
 
-    debug("Running OCR")
-    ocr_data=run_ocr(file_path)
-    
-    debug("Classifying")
-    doc_type=classify(ocr_data)
+    debug("Running OCR and Classifying")
+    doc_type, ocr_data=classify_doc(file_path)
 
     debug("Running LLM to extract data")
     extracted_data=extract_llm_data(ocr_data, doc_type)
@@ -66,4 +60,11 @@ def run_analysis(file_path):
     debug("\nUpdating Database...")
     db_update(doc_type, extracted_data, id)
 
+if __name__=="__main__":
+    try:
+        file=sys.argv[1]
+    except:
+        file=FILE
+
+    run_analysis(os.path.abspath(file))
 

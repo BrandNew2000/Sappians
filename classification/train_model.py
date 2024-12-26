@@ -2,17 +2,16 @@ DEBUG=True
 
 # Import stuff
 
-from pdf2image import convert_from_path
-# import cv2
-import pytesseract
-from PIL import Image
+from img_processing.image_processing import *
 
 import os
 # import re
-# import json
+import json
+
+import joblib
 
 import numpy as np
-from sklearn.preprocessing import LabelBinarizer
+# from sklearn.preprocessing import LabelBinarizer
 
 
 from sklearn.preprocessing import LabelEncoder
@@ -23,22 +22,20 @@ import xgboost as xgb
 # from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-import pandas as pd
+# import pandas as pd
 
 
-import string
+# import string
 import nltk
-from langdetect import detect,LangDetectException
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+
 
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 
 
-INPUT_FLDR=f'{os.path.abspath(os.path.dirname(__file__))}/train_data'
-OUTPUT_FLDR=f'{os.path.abspath(os.path.dirname(__file__))}/processed_txt_data'
+INPUT_FLDR=f'{os.path.abspath(os.path.dirname(__file__))}/training/train_data'
+OUTPUT_FLDR=f'{os.path.abspath(os.path.dirname(__file__))}/training/processed_txt_data'
 
 def debug(text):
     if DEBUG:
@@ -51,37 +48,6 @@ def create_output_dir_structure(input_folder=INPUT_FLDR, output_folder=OUTPUT_FL
     for category in category_list:
         category_path=os.path.join(output_folder,category)
         os.makedirs(category_path,exist_ok=True)
-
-
-# Extract image data
-def extract_text_from_image(image_path):
-    """Extract text from an image using pytesseract"""
-    img = Image.open(image_path)
-    custom_config = r'--psm 1'
-    text = pytesseract.image_to_string(img,config=custom_config)
-    if len(text)<5:
-      return None
-    return text
-
-
-# Clean up the OCR text.
-def clean_text(text):
-  try:
-    language = detect(text)
-  except LangDetectException as e:
-    print(f"Skipping file due to error: {str(e)}")
-
-  text = text.lower()
-
-  tokens = word_tokenize(text)
-
-  stop_words = set(stopwords.words(language)) if language in stopwords.fileids() else set()
-  tokens_cleaned = [word for word in tokens if word not in stop_words]
-
-    # Keep only the first 30 words
-
-  cleaned_text = ' '.join(tokens_cleaned[:30])
-  return cleaned_text
 
 
 # Process the input data
@@ -165,6 +131,23 @@ def evaluate(X_val, y_val, xgb_model, vectorizer):
     print(f"XGBoost Accuracy: {accuracy:.4f}")
 
 
+def save_model(xgb_model, vectorizer, labels):
+    # Save the model
+    filename = f'{os.path.abspath(os.path.dirname(__file__))}/model_save/xgb_model.sav'
+    joblib.dump(xgb_model, filename)
+
+    # Save the vectorizer
+    filename_vectorizer = f'{os.path.abspath(os.path.dirname(__file__))}/model_save/tfidf_vectorizer.sav'
+    joblib.dump(vectorizer, filename_vectorizer)
+
+    # Save labels
+    filename_labels=f'{os.path.abspath(os.path.dirname(__file__))}/model_save/labels.sav'
+    with open(filename_labels, "w") as f:
+       json.dump(labels, f)
+
+    print("Model, vectorizer and labels saved successfully!")
+
+
 def main():
     create_output_dir_structure(INPUT_FLDR, OUTPUT_FLDR)
     process_images_in_folder(INPUT_FLDR, OUTPUT_FLDR)
@@ -173,6 +156,8 @@ def main():
 
     xgb_model, vectorizer, y_val=train(X_train, y_train, y_val)
     evaluate(X_val, y_val, xgb_model, vectorizer)
+
+    save_model(xgb_model, vectorizer, labels)
 
 
 if __name__=="__main__":
