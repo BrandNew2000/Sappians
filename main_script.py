@@ -25,7 +25,7 @@ def makeid():
     return str(time_stamp_hex)[2:]
 
 
-# Run Smitali's code to classify the file. ______________________ TBD
+# Run Smitali's code to classify the file.
 def classify_doc(file_path):
     doc_type, ocr_data=classify.analyze_doc(file_path)
     return doc_type, ocr_data

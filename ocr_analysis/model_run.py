@@ -8,18 +8,21 @@ import sys
 
 DEBUG=False
 
-FILE_TYPE="aadhaar"
-PARSE_DATA="TEN oavsmnent ce India AA D HAAR Government of India rated m sre stoeter Gea one amare ATE m elatd OR Hts / Acnss XML / HAST VATU qe slow wart we. Ete CMI CLAM TCM NSC Cal me caaite oe aaa aaa Ua TT MT, Unique Identification Authority of India alert spaie:/ Enrolment No.: 2821/35032/03347 INFORMATION To @ Aadhaar is a proof of identity, not of citizenship. anfeet aig der *Aditi Navendu Vaidya* m Verify identity using Secure QR Code/ Offline XML/ Online *C/O: Navendu Ram Vaidya* Authentication. **Flat No-C-401 The Pearl Wing C : oo . St.No-1/8 Part 9/1,2 This is electronically generated letter. Balewadi Pune City Pune Maharashtra - 411045** **9545149055 **mw one Sua ae se m Sie squeare#n fafae Geant snhtt arent Sar Baud Wars Fad eed Signature Not Verified Grave 'DENT} ES0n 1 JTHORITY: INDIA 05."
+FILE_TYPE=""
+PARSE_DATA=""
 
-
-
-llm = Llama(
-      model_path=f"{os.path.abspath(os.path.dirname(__file__))}/models/gemma-2-2b-it-IQ4_XS.gguf",
-      # n_gpu_layers=-1, # Uncomment to use GPU acceleration
-      # seed=1337, # Uncomment to set a specific seed
-      n_ctx=8192, # Uncomment to increase the context window
-      verbose=DEBUG,
-)
+try:
+    llm = Llama(
+          model_path=f"{os.path.abspath(os.path.dirname(__file__))}/model.gguf",
+          # n_gpu_layers=-1, # Uncomment to use GPU acceleration
+          # seed=1337, # Uncomment to set a specific seed
+          n_ctx=8192, # Uncomment to increase the context window
+          verbose=DEBUG,
+    )
+except:
+    print("Model not found")
+    raise(FileNotFoundError)
+    
 
 
 def get_response_format(file_type):
