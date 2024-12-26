@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request
 import pandas as pd
+import sys
 
 app = Flask(__name__)
 
 # Load the data
-df = pd.read_csv('data.csv')
+df = pd.read_csv(f"{sys.path[0]}/data.csv")
 
 @app.route('/')
 def home():
