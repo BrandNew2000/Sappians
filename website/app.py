@@ -5,10 +5,12 @@ import sys
 app = Flask(__name__)
 
 # Load the data
-df = pd.read_csv(f"{sys.path[0]}/data.csv")
+df = pd.read_csv(f"{sys.path[0]}/../database.csv", delimiter="|")
 
 @app.route('/')
 def home():
+    global df 
+    df = pd.read_csv(f"{sys.path[0]}/../database.csv", delimiter="|")
     # Pass unique person names to the frontend
     people = df['Person'].unique()
     return render_template('index.html', people=people)

@@ -2,6 +2,8 @@ from llama_cpp import Llama
 import sys
 
 import json_formats
+import json
+
 
 
 DEBUG=False
@@ -45,7 +47,7 @@ def pull_data(file_type, parse_data):
     if DEBUG:
         print(raw_output)
 
-    return raw_output["choices"][0]["message"]["content"]
+    return json.loads(raw_output["choices"][0]["message"]["content"])
         
 
 
