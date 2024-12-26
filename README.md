@@ -3,7 +3,7 @@ appian_challenge'24
 
 ## The LLM thing how-to:
  - Start the flask server by running website/app.py
- - Insert data to the database using "ocr\_analysis/update\_database.py doc\_type ocr\_data"
+ - Insert data to the database using "update\_database.py doc\_type ocr\_data"
  - Reload page to see effects.
 
 ### TO-DO:

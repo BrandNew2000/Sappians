@@ -1,16 +1,16 @@
 from flask import Flask, render_template, request
 import pandas as pd
-import sys
+import os
 
 app = Flask(__name__)
 
 # Load the data
-df = pd.read_csv(f"{sys.path[0]}/../database.csv", delimiter="|")
+df = pd.read_csv(f"{os.path.abspath(os.path.dirname(__file__))}/../database.csv", delimiter="|")
 
 @app.route('/')
 def home():
     global df 
-    df = pd.read_csv(f"{sys.path[0]}/../database.csv", delimiter="|")
+    df = pd.read_csv(f"{os.path.abspath(os.path.dirname(__file__))}/../database.csv", delimiter="|")
     # Pass unique person names to the frontend
     people = df['Person'].unique()
     return render_template('index.html', people=people)

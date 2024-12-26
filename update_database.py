@@ -1,6 +1,6 @@
 from ocr_analysis import model_run
+import os
 import sys
-
 
 #############
 # All hail ChatGPT
@@ -31,7 +31,7 @@ def dict_to_string(data, indent=0):
 
 
 def database_insert(person_name, file_type, string_output, key):
-    with open(f"{sys.path[0]}/../database.csv", "a") as f:
+    with open(f"{os.path.abspath(os.path.dirname(__file__))}/database.csv", "a") as f:
         f.write(f"{person_name}|{file_type}|{string_output}|{key}\n")
 
 def update(file_type, llm_data, key=0):

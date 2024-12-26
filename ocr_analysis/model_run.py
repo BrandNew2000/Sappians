@@ -1,8 +1,8 @@
 from llama_cpp import Llama
-import sys
-
-import json_formats
+import os
+from . import json_formats
 import json
+import sys
 
 
 
@@ -14,7 +14,7 @@ PARSE_DATA="TEN oavsmnent ce India AA D HAAR Government of India rated m sre sto
 
 
 llm = Llama(
-      model_path=f"{sys.path[0]}/models/gemma-2-2b-it-IQ4_XS.gguf",
+      model_path=f"{os.path.abspath(os.path.dirname(__file__))}/models/gemma-2-2b-it-IQ4_XS.gguf",
       # n_gpu_layers=-1, # Uncomment to use GPU acceleration
       # seed=1337, # Uncomment to set a specific seed
       n_ctx=8192, # Uncomment to increase the context window
