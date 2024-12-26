@@ -44,6 +44,7 @@ def get_output(parse_data, json_format):
     )
     return output
 
+
 def pull_data(file_type, parse_data):
     json_format=get_response_format(file_type)
     raw_output=get_output(parse_data, json_format)

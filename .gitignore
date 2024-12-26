@@ -2,3 +2,4 @@
 .DS_Store
 sorted_files/
 __pycache__/
+venv

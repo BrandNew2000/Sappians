@@ -2,7 +2,7 @@ import shutil
 import datetime
 import update_database
 from ocr_analysis import model_run
-from classification import classify
+from classification_text import classify
 import sys
 import os
 
