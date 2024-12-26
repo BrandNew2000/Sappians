@@ -30,6 +30,7 @@
                         <tr>
                             <th>Document</th>
                             <th>Details</th>
+                            <th>File Key</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,7 +53,7 @@
                     tbody.innerHTML = ''; // Clear old rows
                     data.forEach(row => {
                         const tr = document.createElement('tr');
-                        tr.innerHTML = `<td>${row.Document}</td><td>${row.Details}</td>`;
+                        tr.innerHTML = `<td>${row.Document}</td><td>${row.Details}</td><td>${row.Key}</td>`;
                         tbody.appendChild(tr);
                     });
                 });

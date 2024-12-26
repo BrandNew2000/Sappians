@@ -1,4 +1,4 @@
-import model_run
+from ocr_analysis import model_run
 import sys
 
 
@@ -30,11 +30,20 @@ def dict_to_string(data, indent=0):
 ############
 
 
-def database_insert(person_name, file_type, string_output):
+def database_insert(person_name, file_type, string_output, key):
     with open(f"{sys.path[0]}/../database.csv", "a") as f:
-        f.write(f"{person_name}|{file_type}|{string_output}\n")
+        f.write(f"{person_name}|{file_type}|{string_output}|{key}\n")
 
-def update():
+def update(file_type, llm_data, key=0):
+
+    
+    person_name=llm_data["person_name"]
+    string_output=dict_to_string(llm_data)
+
+    database_insert(person_name, file_type, string_output, key)
+
+
+def main():
     try:
         file_type=sys.argv[1]
         parse_data=sys.argv[2]
@@ -42,15 +51,8 @@ def update():
         file_type=model_run.FILE_TYPE
         parse_data=model_run.PARSE_DATA    
     
-
     output=model_run.pull_data(file_type, parse_data)
-    person_name=output["person_name"]
-    string_output=dict_to_string(output)
-
-    database_insert(person_name, file_type, string_output)
-
-
-
+    update(file_type, output)
 
 if __name__ == "__main__":
-    update()
+    main()
