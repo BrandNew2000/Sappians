@@ -7,7 +7,7 @@ import cv2
 import sys
 
 DEBUG = True
-TEST_FILE = "Aditi/adhaar_sample.pdf"
+TEST_FILE = ""
 
 SAVE_PATH_MODEL = f'{os.path.abspath(os.path.dirname(__file__))}/model_save/tf_model.keras'
 SAVE_PATH_DICT = f'{os.path.abspath(os.path.dirname(__file__))}/model_save/tf_labels.pkl'

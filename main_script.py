@@ -7,7 +7,7 @@ import sys
 import os
 
 DEBUG=True
-FILE="Aditi/adhaar_sample.pdf"
+FILE=""
 
 def debug(string):
     if DEBUG:

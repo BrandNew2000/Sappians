@@ -2,6 +2,9 @@ from ocr_analysis import model_run
 import os
 import sys
 
+
+DATABASE_PATH=f"{os.path.abspath(os.path.dirname(__file__))}/database.csv"
+
 #############
 # All hail ChatGPT
 def dict_to_string(data, indent=0):
@@ -31,7 +34,12 @@ def dict_to_string(data, indent=0):
 
 
 def database_insert(person_name, file_type, string_output, key):
-    with open(f"{os.path.abspath(os.path.dirname(__file__))}/database.csv", "a") as f:
+    
+    if not os.path.isfile(DATABASE_PATH):
+        with open(DATABASE_PATH, "a") as f:
+            f.write("Person|Document|Details|Key\n")
+
+    with open(DATABASE_PATH, "a") as f:
         f.write(f"{person_name}|{file_type}|{string_output}|{key}\n")
 
 def update(file_type, llm_data, key=0):
