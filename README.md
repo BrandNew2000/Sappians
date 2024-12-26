@@ -1,5 +1,5 @@
-# methies
-Appian_challenge'24
+# Team Name placeholder
+Appian Challenge '24
 
 ## How to run:
  - Follow the instructions in the _ocr_analysis_ README to download the required llm model.
