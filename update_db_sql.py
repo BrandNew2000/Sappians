@@ -1,9 +1,8 @@
-from ocr_analysis import model_run
 import os
-import sys
+import sqlite3
 
 
-DATABASE_PATH=f"{os.path.abspath(os.path.dirname(__file__))}/database.csv"
+DATABASE_PATH=f"{os.path.abspath(os.path.dirname(__file__))}/database.sqlite"
 
 #############
 def dict_to_string(data, indent=0):
@@ -32,17 +31,33 @@ def dict_to_string(data, indent=0):
 ############
 
 
+def init_database():
+    connection = sqlite3.connect(DATABASE_PATH)
+
+    table = """ CREATE TABLE MASTER (
+            Key VARCHAR(10) NOT NULL,
+            Name CHAR(25) NOT NULL,
+            File CHAR(25) NOT NULL,
+            Details CHAR(255) NOT NULL
+        );"""
+    
+    connection.execute(table)
+    connection.commit()
+    connection.close()
+
+
 def database_insert(person_name, file_type, string_output, key):
     
-    if not os.path.isfile(DATABASE_PATH):
-        with open(DATABASE_PATH, "a") as f:
-            f.write("Person|Document|Details|Key\n")
+    connection = sqlite3.connect(DATABASE_PATH)
+    connection.execute(f'''INSERT INTO MASTER VALUES ('{key}', '{person_name}', '{file_type}', '{string_output}')''')
+    connection.commit()
+    connection.close()
 
-    with open(DATABASE_PATH, "a") as f:
-        f.write(f"{person_name}|{file_type}|{string_output}|{key}\n")
 
 def update(file_type, llm_data, key=0):
 
+    if not os.path.isfile(DATABASE_PATH):
+        init_database()
     
     person_name=llm_data["person_name"]
     string_output=dict_to_string(llm_data)
@@ -51,15 +66,7 @@ def update(file_type, llm_data, key=0):
 
 
 def main():
-    try:
-        file_type=sys.argv[1]
-        parse_data=sys.argv[2]
-    except:
-        file_type=model_run.FILE_TYPE
-        parse_data=model_run.PARSE_DATA    
-    
-    output=model_run.pull_data(file_type, parse_data)
-    update(file_type, output)
+    update("aadhaar", {"person_name":"meow", "add":"kitty"})
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()

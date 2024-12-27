@@ -3,6 +3,7 @@
 sorted_files/
 __pycache__/
 venv/
+database.sqlite
 database.csv
 testing_stuff/*
 !testing_stuff/adhaar.py

@@ -53,7 +53,7 @@
                     tbody.innerHTML = ''; // Clear old rows
                     data.forEach(row => {
                         const tr = document.createElement('tr');
-                        tr.innerHTML = `<td>${row.Document}</td><td>${row.Details}</td><td>${row.Key}</td>`;
+                        tr.innerHTML = `<td>${row.File}</td><td>${row.Details}</td><td>${row.Key}</td>`;
                         tbody.appendChild(tr);
                     });
                 });

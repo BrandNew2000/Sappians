@@ -1,6 +1,7 @@
 import shutil
 import datetime
-import update_database
+# import update_database as update_db
+import update_db_sql as update_db
 from ocr_analysis import model_run
 from classification_text import classify
 import sys
@@ -40,7 +41,7 @@ def extract_llm_data(ocr_data, doc_type):
 
 # Update the database with the required data.
 def db_update(doc_type, llm_data, id):
-    update_database.update(doc_type, llm_data, id)
+    update_db.update(doc_type, llm_data, id)
 
 
 def run_analysis(file_path):
