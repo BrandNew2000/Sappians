@@ -6,7 +6,6 @@ import sys
 DATABASE_PATH=f"{os.path.abspath(os.path.dirname(__file__))}/database.csv"
 
 #############
-# All hail ChatGPT
 def dict_to_string(data, indent=0):
     """Convert a dictionary to a structured string."""
     result = ""
