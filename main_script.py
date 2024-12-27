@@ -8,6 +8,7 @@ import os
 
 DEBUG=True
 FILE=""
+OUTPUT_FLDR=f"{os.path.abspath(os.path.dirname(__file__))}/sorted_files/"
 
 def debug(string):
     if DEBUG:
@@ -15,7 +16,8 @@ def debug(string):
 
 # Move file from existing location to parsed location and rename it.
 def transport_file(file_path, id):
-    shutil.copyfile(file_path, f"sorted_files/{id}.pdf")
+    os.makedirs(OUTPUT_FLDR, exist_ok=True)
+    shutil.copyfile(file_path, f"{OUTPUT_FLDR}/{id}.pdf")
 
 
 # ID the file using current epoch in hex (Credits: StackOverflow): 
